@@ -1,9 +1,9 @@
 import Interactivators from "./Interactivators"
 
-const ChatItem = ({ type, name, time, message, imageURL }) => {
+const ChatItem = ({ type, name, time, message, imageURL, interactivators }) => {
     if (type === "recieved")
-    return (
-<div className="flex items-start gap-2.5 my-5">
+        return (
+            <div className="flex items-start gap-2.5 my-5">
                 <img className="w-8 h-8 rounded-full" src={imageURL} alt="Jese image" />
                 <div className="flex flex-col">
                     <div className="flex flex-col gap-1 w-full max-w-[320px]">
@@ -16,7 +16,7 @@ const ChatItem = ({ type, name, time, message, imageURL }) => {
                         </div>
                     </div>
                     <div className="interactive-items max-w-[300px]">
-                        <Interactivators/>
+                        {!interactivators?"":(<Interactivators data={interactivators}/>)}
                     </div>
                 </div>
             </div>
@@ -24,8 +24,8 @@ const ChatItem = ({ type, name, time, message, imageURL }) => {
     else
         return (
 
-            <div className="flex items-start gap-2.5 my-5">
-                <div className="flex flex-col gap-1 w-full max-w-[320px]">
+            <div className="flex items-start justify-end gap-2.5 my-5 w-full">
+                <div className="flex flex-col gap-1 max-w-[320px]">
                     <div className="flex items-center justify-end space-x-2 rtl:space-x-reverse">
                         <span className="text-sm font-semibold text-gray-600">{name}</span>
                         <span className="text-sm font-normal text-gray-500 dark:text-gray-400">{time}</span>

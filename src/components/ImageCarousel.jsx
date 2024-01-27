@@ -16,7 +16,7 @@ const ImageCarousel = ({images}) => {
   ))
   return (
     <Carousel
-      className="rounded-xl min-h-[200px] min-w-[200px]"
+      className="rounded-xl min-h-[200px] min-w-[200px] my-5"
       prevArrow={({ handlePrev }) => (
         <IconButton
           variant="text"

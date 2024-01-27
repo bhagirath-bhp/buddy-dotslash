@@ -8,3 +8,30 @@
 .noscrollbar::-webkit-scrollbar {
   @apply w-0;
 }
+@keyframes expand {
+  0% {
+    width: 1em;
+    height: 1em;
+    border: white 0.01em solid;
+    opacity: 1;
+  }
+  100% {
+    width: 12em;
+    height: 12em;
+    border: white 0.1em solid;
+    opacity: 0;
+  }
+}
+
+.animate-expand {
+  animation: expand 2s linear infinite;
+}
+.a-delay-200{
+  animation-delay: 200ms;
+}
+.a-delay-600{
+  animation-delay: 600ms;
+}
+.a-delay-900{
+  animation-delay: 9000ms;
+}
