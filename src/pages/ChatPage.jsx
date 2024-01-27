@@ -1,27 +1,34 @@
 import { IconButton } from "@material-tailwind/react";
 import ChatItem from "../components/ChatItem";
-import Dictaphone from "../components/ReactSpeechRecognition";
 import { VscSend } from "react-icons/vsc";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { CiMicrophoneOff, CiMicrophoneOn } from "react-icons/ci";
 import FloatingIcon from "../components/FloatingIcon";
-
+import ProductSearch from "../components/ProductSearch";
 
 const ChatPage = () => {
     const chatContainerRef = useRef();
-    const [prompt, setPrompt] = useState("");
+    const [prompt, setPrompt] = useState(" ");
     const [thinking, setThinking] = useState(true);
     const [chatComponentArray, setChatComponentArray] = useState([]);
     const componentArray = chatComponentArray
     const CHATBOT_URI = "https://customized-chatbot.onrender.com";
+
     const {
         transcript,
         listening,
         resetTranscript,
         browserSupportsSpeechRecognition
     } = useSpeechRecognition();
+
+
+    useEffect(()=>{
+        setPrompt(transcript)
+    }, [transcript])
+
+
 
     const updatePrompt = (e) => {
         setPrompt(e.target.value);
@@ -34,6 +41,7 @@ const ChatPage = () => {
             SpeechRecognition.startListening();
         }
         else {
+            console.log(transcript);
             SpeechRecognition.stopListening();
         }
     }
@@ -65,7 +73,9 @@ const ChatPage = () => {
                     interactivators={true}
                 />)
             } catch (error) {
-                setThinking(false)
+                setTimeout(() => {
+                    setThinking(false)
+                }, 1000);
                 componentArray.push(<ChatItem
                     key={Math.random()}
                     type="recieved"
@@ -90,11 +100,11 @@ const ChatPage = () => {
                 {!thinking?chatComponentArray:<FloatingIcon/>}
             </div>
             <form className="chat-form gap-4 flex w-[50%]" onSubmit={handleSubmit}>
-                {!listening ? (
-                    <input type="text" className="bg-transparent w-[80%] py-[.5rem] border-[1px] border-white rounded-lg" onChange={updatePrompt} />
+                <input type="text" className="bg-transparent w-[80%] py-[.5rem] border-[1px] border-white rounded-lg" value={prompt} onChange={updatePrompt} />
+                {/* {!listening ? (
                 ) : (
                     <p className="py-[.5rem] w-[80%] rounded-lg border-[1px] border-white">{transcript}</p>
-                )}
+                )} */}
                 <IconButton className="rounded-full text-white text-2xl p-[1rem] border-[1px] border-white" onClick={handleListening}>
                     {!listening ? (<CiMicrophoneOn />) : (<CiMicrophoneOff />)}
                 </IconButton>
@@ -102,6 +112,7 @@ const ChatPage = () => {
                     <VscSend />
                 </IconButton>
             </form>
+            <ProductSearch/>
         </div>
     );
 };
