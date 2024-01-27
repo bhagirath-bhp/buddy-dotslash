@@ -2,10 +2,11 @@ import React from 'react'
 
 const ProductSearch = () => {
     const products = [
-        { name: "Product 1", features: "Feature 1" },
-        { name: "Product 2", features: "Feature 2" },
-        { name: "dotslash", features: "hackathon" },
-        { name: "paneeer bhurji", features: "sabji" },
+        { id:2, name: "Product 1", imageURL: "Feature 1", productURL: "/images/dummy.jpg"},
+        { id:2, name: "Paneer Bhurji", imageURL: "Feature 1", productURL: "/images/dummy.jpg"},
+        { id:2, name: "LG TV", imageURL: "Feature 1", productURL: "/images/dummy.jpg"},
+        { id:2, name: "Chrome Book", imageURL: "Feature 1", productURL: "/images/dummy.jpg"},
+        { id:2, name: "Coffee", imageURL: "Feature 1", productURL: "/images/dummy.jpg"},
     ];
 
     const paragraph = "I am interested in Product 1 and Product 3. Can you provide more information? tip: I like paneeer bhurji";
