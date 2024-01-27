@@ -100,7 +100,7 @@ const ChatPage = () => {
                 {!thinking?chatComponentArray:<FloatingIcon/>}
             </div>
             <form className="chat-form gap-4 flex w-[50%]" onSubmit={handleSubmit}>
-                <input type="text" className="bg-transparent w-[80%] py-[.5rem] border-[1px] border-white rounded-lg" value={prompt} onChange={updatePrompt} />
+                <input type="text" className="bg-transparent w-[80%] py-[.5rem] pl-[1rem] border-[1px] border-white rounded-lg" value={prompt} onChange={updatePrompt} />
                 {/* {!listening ? (
                 ) : (
                     <p className="py-[.5rem] w-[80%] rounded-lg border-[1px] border-white">{transcript}</p>
