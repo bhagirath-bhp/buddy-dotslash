@@ -1,7 +1,6 @@
 import { IconButton } from '@material-tailwind/react';
 import { useState } from 'react';
 import { CiMicrophoneOff, CiMicrophoneOn } from 'react-icons/ci';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 const Dictaphone = () => {
     const {
         transcript,
@@ -9,17 +8,14 @@ const Dictaphone = () => {
         resetTranscript,
         browserSupportsSpeechRecognition
     } = useSpeechRecognition();
-    const [isListening, setIsListening] = useState(false);
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
     }
     const handleListening = () => {
         if(!listening){
-            setIsListening(true);
             SpeechRecognition.startListening();
         }
         else{
-            setIsListening(false);
             SpeechRecognition.stopListening();
         }
     }
