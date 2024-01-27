@@ -7,6 +7,13 @@ export default withMT({
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      verySmMobile: "250px",
+      smMobile: "340px",
+      mobile: "640px",
+      tablet: "960px",
+      desktop: "1240px"
+    },
     extend: {
       animation: {
         'spin-slow': 'spin 3s linear infinite',
