@@ -3,5 +3,8 @@
 @tailwind utilities;
 
 .app-container, body{
-  @apply bg-black text-white
+  @apply bg-black text-white;
+}
+.noscrollbar::-webkit-scrollbar {
+  @apply w-0;
 }

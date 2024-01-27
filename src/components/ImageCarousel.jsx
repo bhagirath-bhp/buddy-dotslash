@@ -1,13 +1,22 @@
 import { Carousel, IconButton } from "@material-tailwind/react"
 
-const ImageCarousel = (props) => {
-  const imgURLs = [...props.urls];
+const ImageCarousel = ({images}) => {
+  const images1 = [
+    {imageURL: "/images/dummy.jpg"},
+    {imageURL: "/images/dummy.jpg"},
+    {imageURL: "/images/dummy.jpg"},
+    {imageURL: "/images/dummy.jpg"},
+    {imageURL: "/images/dummy.jpg"},
+    {imageURL: "/images/dummy.jpg"},
+    {imageURL: "/images/dummy.jpg"},
+  ]
   // const imageComponentSet = imgURLs.map((img)=>(<img src={img.url} key={img.key} alt="image 1" className="h-full w-full object-cover"/>
-  const imageComponentSet = imgURLs.map((img)=>(<img src={img.imageURL} key={Math.random()} alt="image 1" className="h-full w-full object-cover"/>
+  // const imageComponentSet = images.map((img)=>(<img src={img.imageURL} key={Math.random()} alt="image 1" className="h-full w-full object-cover"/>
+  const imageComponentSet = images1.map((img)=>(<img src={img.imageURL} key={Math.random()} alt="image 1" className="min-h-[200px] min-w-[200px] w-full object-cover"/>
   ))
   return (
     <Carousel
-      className="rounded-xl max-h-[30rem]"
+      className="rounded-xl min-h-[200px] min-w-[200px]"
       prevArrow={({ handlePrev }) => (
         <IconButton
           variant="text"
