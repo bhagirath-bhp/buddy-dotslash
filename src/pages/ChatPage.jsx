@@ -7,6 +7,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { CiMicrophoneOff, CiMicrophoneOn } from "react-icons/ci";
 import FloatingIcon from "../components/FloatingIcon";
 import ProductSearch from "../components/ProductSearch";
+import GeneratePitch from "../components/GeneratePitch";
 
 
 const ChatPage = () => {
@@ -15,7 +16,7 @@ const ChatPage = () => {
     const [prompt, setPrompt] = useState(" ");
     const [thinking, setThinking] = useState(true);
     const [chatComponentArray, setChatComponentArray] = useState([]);
-    const companyRef = useRef();
+    const componentArray = chatComponentArray
     const CHATBOT_URI = "https://customized-chatbot.onrender.com";
     const DB_URI = "https://ultimatecc-strapi.onrender.com/api";
     const bearer = "5a2c40b8f8edf75a9877089261a42e0c16a257a3d18ace5af3297a4affd6ade0402a647251e8a08aba1bcb43d87484c0778fc96b9250fb03e9ad27f24f05d67a743f1fa1ea6148a57accf52e1542ef8a8ee93b9b203a57beb2ce0230490a3ce25f8bd1ea652c622e3cf390959cb818643ba2385eb53b52e99e45ecf25895ef2f"
@@ -26,6 +27,7 @@ const ChatPage = () => {
         resetTranscript,
         browserSupportsSpeechRecognition
     } = useSpeechRecognition();
+
 
     useEffect(() => {
         setPrompt(transcript)
@@ -42,7 +44,7 @@ const ChatPage = () => {
                 .catch((error) => {
                     console.log(error)
                 })
-            if (response && response.status === 200) {
+            if (response.status === 200) {
                 const companyNames = response.data.data.map(item => item.attributes.name);
                 setCompanies(companyNames);
             }
@@ -66,64 +68,67 @@ const ChatPage = () => {
             SpeechRecognition.stopListening();
         }
     }
+    console.log(companies)
     const handleSubmit = async (event) => {
         setThinking(true)
         event.preventDefault();
         if (prompt.length > 0) {
-            chatContainerRef.current.scrollTop = 0;
-            const newChatComponentArray = [...chatComponentArray]; // Create a new array reference
-            newChatComponentArray.push(<ChatItem
+            chatContainerRef.scrollTop = 0;
+            componentArray.push(<ChatItem
                 key={Math.random() + Math.random()}
                 type="sent"
                 name="Jai Shree Ram"
                 time="11:30 AM"
                 message={prompt}
                 imageURL="/images/dummy.jpg"
-            />);
+            />)
             try {
                 const response = await axios.post(`${CHATBOT_URI}/ask`, {
                     sendQuery: prompt,
                 });
-                newChatComponentArray.push(<ChatItem
+                componentArray.push(<ChatItem
                     key={Math.random()}
-                    type="received"
+                    type="recieved"
                     name="Jai Shree Ram"
                     time="11:30 AM"
                     message={response.data}
                     imageURL="/images/dummy.jpg"
                     interactivators={true}
-                />);
+                />)
             } catch (error) {
                 setTimeout(() => {
                     setThinking(false)
                 }, 1000);
-                newChatComponentArray.push(<ChatItem
+                componentArray.push(<ChatItem
                     key={Math.random()}
-                    type="received"
+                    type="recieved"
                     name="Jai Shree Ram"
                     time="11:30 AM"
                     message={error.message}
                     imageURL="/images/dummy.jpg"
                     interactivators={true}
-                />);
+                />)
+
             }
-            setChatComponentArray(newChatComponentArray); // Update state with the new array
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+
+            setChatComponentArray(componentArray)
+            chatContainerRef.scrollTop = chatContainerRef.scrollHeight;
         }
     };
 
     const companiesOptionContainer = companies.map((item) => (
-        <Option key={item}>{item}</Option>
-    ));
+        <Option key={Math.random} >{item}</Option>
+    ))
     return (
         <div className="flex flex-col justify-center items-center w-full h-screen py-[1rem]">
             <div className="nav flex justify-between w-full px-[3rem]">
                 <div className="logo">UltimateCC</div>
                 <div className="select-company">
-                    <Select ref={companyRef}>
+                    <Select >
                         {companiesOptionContainer}
                     </Select>
                 </div>
+
             </div>
             <div className="chat-area overflow-y-scroll h-[90%] w-[50%] noscrollbar flex flex-col" ref={chatContainerRef}>
                 {!thinking ? chatComponentArray : <FloatingIcon />}
@@ -138,6 +143,7 @@ const ChatPage = () => {
                 </IconButton>
             </form>
             <ProductSearch />
+            <GeneratePitch audioUrl="/audio/sample.mp3"/>
         </div>
     );
 };
