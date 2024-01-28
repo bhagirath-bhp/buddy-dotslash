@@ -2,6 +2,18 @@ import Interactivators from "./Interactivators"
 
 const ChatItem = ({ type, name, time, message, imageURL, interactivators }) => {
     console.log(interactivators)
+    let interactivatorSet;
+    // if (interactivators)
+    //     interactivatorSet = interactivators.map((item) => (
+    //         <Interactivators data={
+    //             {
+    //                 images: interactivators.imageUrl || "d",
+    //                 mail: interactivators.mail || "v",
+    //                 phone: interactivators.phone || "a",
+    //                 link: interactivators.link || "hello.coom"
+    //             }
+    //         } />
+    // ))
     if (type === "recieved")
         return (
             <div className="flex items-start gap-2.5 my-5">
@@ -17,14 +29,15 @@ const ChatItem = ({ type, name, time, message, imageURL, interactivators }) => {
                         </div>
                     </div>
                     <div className="interactive-items max-w-[300px]">
-                        {!interactivators?"":(<Interactivators data={
+                        {/* {interactivatorSet ? interactivatorSet : ""} */}
+                        <Interactivators data={
                             {
-                                images: "",
-                                mail: "",
-                                phone: "",
-                                link: interactivators.link || "hello.coom" 
+                                images: interactivators.imageUrl || "d",
+                                mail: interactivators.mail || "v",
+                                phone: interactivators.phone || "a",
+                                link: interactivators.url || "hello.coom"
                             }
-                        }/>)}
+                        } />
                     </div>
                 </div>
             </div>

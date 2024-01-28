@@ -15,9 +15,9 @@ const ChatPage = () => {
     const [companyData, setCompanyData] = useState([]);
     const [responseProducts, setResponseProducts] = useState([]);
     const [companyProducts, setCompanyProducts] = useState([]);
-    const [interactivators, setInteractivators] = useState([]);
+    const [interactivators, setInteractivators] = useState({});
     const chatContainerRef = useRef();
-    const [currentCompany, setCurrentCompany] = useState("company A");
+    const [currentCompany, setCurrentCompany] = useState("boult");
     const [prompt, setPrompt] = useState(" ");
     const [thinking, setThinking] = useState(false);
     const [chatComponentArray, setChatComponentArray] = useState([]);
@@ -128,12 +128,15 @@ const ChatPage = () => {
 
             if (response.status === 200) {
                 setThinking(false)
-                const products = extractProductNames(response.data.response, companyProducts)
-                products.forEach((item)=>{
+                const products = extractProductNames(response.data.response, companyProducts);
+
+                products.forEach((item) => {
                     const product1 = companyProducts.find(product => product.name === item);
-                    console.log(product1)
-                    setURLs([...urls, (product1.url || null)]);
-                })
+                    if (product1) {
+                        setInteractivators({ link: product1.url, images: product1.imageUrl, mail: "h", phone: "p" });
+                    }
+                });
+
                 componentArray.push(<ChatItem
                     key={Math.random()}
                     type="recieved"
@@ -141,12 +144,8 @@ const ChatPage = () => {
                     time="11:30 AM"
                     message={response.data.response}
                     imageURL="/images/dummy.jpg"
-                    interactivators={{
-                        images: false,
-                        mail: false,
-                        phone: false,
-                        link: urls,
-                    }}
+                    // interactivators={interactivators}
+                    interactivators={interactivators}
                 />)
                 // console.log(products)
             }

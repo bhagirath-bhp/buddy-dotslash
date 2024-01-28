@@ -3,22 +3,23 @@ import ImageCarousel from './ImageCarousel'
 import { Tooltip } from 'react-tooltip'
 
 const Interactivators = ({ data }) => {
-  console.log(data.link)
-  const redirects = data.link.map((item) => (
-    <a href={item} target="_blank" rel="noopener noreferrer">
-      <Button color='white' id="link-tooltip" className={`${!item ? "hidden" : "block"}`}>
-        Redirect
-        <Tooltip anchorSelect="#link-tooltip">
-          <p>{`visit ${item}?`}</p>
-        </Tooltip>
-      </Button>
-    </a>
-  ))
+  console.log(data)
+  const redirects = "";
+  // const redirects = data.map((item) => (
+  // ))
   return (
     <div>
       <ImageCarousel images={data.images} />
       <div className="btns flex gap-5">
-        {redirects}
+        {/* {redirects} */}
+        <a href={data.link} target="_blank" rel="noopener noreferrer">
+          <Button color='white' id="link-tooltip" className={`${!data.link ? "hidden" : "block"}`}>
+            Redirect
+            <Tooltip anchorSelect="#link-tooltip">
+              <p>{`visit ${data.link}?`}</p>
+            </Tooltip>
+          </Button>
+        </a>
         <a href={`tel:${data.phone}`} target="_blank" rel="noopener noreferrer">
           <Button color='white' id="phone-tooltip" className={`${!data.phone ? "hidden" : "block"}`}>
             Call
