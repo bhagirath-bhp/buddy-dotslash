@@ -15,7 +15,7 @@ const ChatPage = () => {
     const [companyData, setCompanyData] = useState([]);
     const [responseProducts, setResponseProducts] = useState([]);
     const [companyProducts, setCompanyProducts] = useState([]);
-    const [urls, setURLs] = useState([]);
+    const [interactivators, setInteractivators] = useState([]);
     const chatContainerRef = useRef();
     const [currentCompany, setCurrentCompany] = useState("company A");
     const [prompt, setPrompt] = useState(" ");
@@ -131,7 +131,8 @@ const ChatPage = () => {
                 const products = extractProductNames(response.data.response, companyProducts)
                 products.forEach((item)=>{
                     const product1 = companyProducts.find(product => product.name === item);
-                    setURLs([...urls, product1.url || null]);
+                    console.log(product1)
+                    setURLs([...urls, (product1.url || null)]);
                 })
                 componentArray.push(<ChatItem
                     key={Math.random()}
@@ -154,7 +155,7 @@ const ChatPage = () => {
             chatContainerRef.scrollTop = chatContainerRef.scrollHeight;
         }
     };
-    console.log(urls);
+    // console.log(urls);
     // console.log(companyProducts);
     // const companiesOptionContainer = companies.map((item) => (
     //     <Option key={item[1]} >{item[0]}</Option>

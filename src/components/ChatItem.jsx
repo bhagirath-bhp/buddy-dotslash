@@ -1,6 +1,7 @@
 import Interactivators from "./Interactivators"
 
 const ChatItem = ({ type, name, time, message, imageURL, interactivators }) => {
+    console.log(interactivators)
     if (type === "recieved")
         return (
             <div className="flex items-start gap-2.5 my-5">
@@ -21,7 +22,7 @@ const ChatItem = ({ type, name, time, message, imageURL, interactivators }) => {
                                 images: "",
                                 mail: "",
                                 phone: "",
-                                link: interactivators.link
+                                link: interactivators.link || "hello.coom" 
                             }
                         }/>)}
                     </div>
