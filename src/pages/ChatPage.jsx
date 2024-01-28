@@ -6,16 +6,19 @@ import axios from "axios";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { CiMicrophoneOff, CiMicrophoneOn } from "react-icons/ci";
 import FloatingIcon from "../components/FloatingIcon";
-import ProductSearch from "../components/ProductSearch";
 import GeneratePitch from "../components/GeneratePitch";
+import { extractProductNames } from "../utils";
 
 
 const ChatPage = () => {
     const [companies, setCompanies] = useState([]);
+    const [companyData, setCompanyData] = useState([]);
+    const [responseProducts, setResponseProducts] = useState([]);
+    const [companyProducts, setCompanyProducts] = useState([]);
     const chatContainerRef = useRef();
     const [currentCompany, setCurrentCompany] = useState("");
     const [prompt, setPrompt] = useState(" ");
-    const [thinking, setThinking] = useState(true);
+    const [thinking, setThinking] = useState(false);
     const [chatComponentArray, setChatComponentArray] = useState([]);
     const componentArray = chatComponentArray
     const CHATBOT_URI = "https://customized-chatbot.onrender.com";
@@ -37,7 +40,7 @@ const ChatPage = () => {
     useEffect(() => {
         async function fetchData() {
             const response = await axios
-                .get(`${DB_URI}/companies?populate=*`, {
+                .get(`${DB_URI}/companies`, {
                     headers: {
                         Authorization: `Bearer ${bearer}`
                     }
@@ -45,14 +48,32 @@ const ChatPage = () => {
                 .catch((error) => {
                     console.log(error)
                 })
+            // console.log(response.data.data)
             if (response.status === 200) {
                 const companyNames = response.data.data.map(item => [item.attributes.name, item.id]);
+                // const products = response.data.data.map(item => item.attributes)
+                // console.log(products)
                 setCompanies(companyNames);
+                setCompanyData(response.data);
+
             }
         }
         fetchData();
     }, [])
 
+    useEffect(()=>{
+        async function fetchCompanyData(){
+            if(currentCompany){
+                const response = await axios.get(`${DB_URI}/companies?populate=*&filters[name][$eq]=${currentCompany}`, {
+                    headers: {
+                        Authorization: `Bearer ${bearer}`
+                    }
+                });
+                setCompanyProducts(response.data.data[0].attributes.products);
+            }
+        }
+        fetchCompanyData();
+    }, [currentCompany])
 
     const updatePrompt = (e) => {
         setPrompt(e.target.value);
@@ -113,12 +134,15 @@ const ChatPage = () => {
                     message={response.data.response}
                     imageURL="/images/dummy.jpg"
                 />)
+                const products = extractProductNames(response.data.response, companyProducts)
+                console.log(products) 
             }
-
+            
             setChatComponentArray(componentArray)
             chatContainerRef.scrollTop = chatContainerRef.scrollHeight;
         }
     };
+    // console.log(companyData.data);
     // const companiesOptionContainer = companies.map((item) => (
     //     <Option key={item[1]} >{item[0]}</Option>
     // ))
@@ -154,7 +178,6 @@ const ChatPage = () => {
                     <VscSend />
                 </IconButton>
             </form>
-            <ProductSearch />
             {/* <GeneratePitch audioUrl="/audio/sample.mp3"/> */}
         </div>
     );
