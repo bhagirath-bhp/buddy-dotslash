@@ -18,10 +18,10 @@ const ChatItem = ({ type, name, time, message, imageURL, interactivators }) => {
                     <div className="interactive-items max-w-[300px]">
                         {!interactivators?"":(<Interactivators data={
                             {
-                                images: ["/images/dummy.jpg", "/images/dummy.jpg", "/images/dummy.jpg", "/images/dummy.jpg"],
-                                mail: "hello@gmail.com",
-                                phone: "+91 9384898238",
-                                link: "hello.com"
+                                images: "",
+                                mail: "",
+                                phone: "",
+                                link: interactivators.link
                             }
                         }/>)}
                     </div>

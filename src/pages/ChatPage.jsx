@@ -15,13 +15,15 @@ const ChatPage = () => {
     const [companyData, setCompanyData] = useState([]);
     const [responseProducts, setResponseProducts] = useState([]);
     const [companyProducts, setCompanyProducts] = useState([]);
+    const [urls, setURLs] = useState([]);
     const chatContainerRef = useRef();
-    const [currentCompany, setCurrentCompany] = useState("");
+    const [currentCompany, setCurrentCompany] = useState("company A");
     const [prompt, setPrompt] = useState(" ");
     const [thinking, setThinking] = useState(false);
     const [chatComponentArray, setChatComponentArray] = useState([]);
     const componentArray = chatComponentArray
     const CHATBOT_URI = "https://ultimatecc-bs.onrender.com";
+    // const CHATBOT_URI = "https://customized-chatbot.onrender.com";
     const DB_URI = "https://ultimatecc-strapi.onrender.com/api";
     const bearer = "5a2c40b8f8edf75a9877089261a42e0c16a257a3d18ace5af3297a4affd6ade0402a647251e8a08aba1bcb43d87484c0778fc96b9250fb03e9ad27f24f05d67a743f1fa1ea6148a57accf52e1542ef8a8ee93b9b203a57beb2ce0230490a3ce25f8bd1ea652c622e3cf390959cb818643ba2385eb53b52e99e45ecf25895ef2f"
 
@@ -86,7 +88,6 @@ const ChatPage = () => {
             SpeechRecognition.startListening();
         }
         else {
-            console.log(transcript);
             SpeechRecognition.stopListening();
         }
     }
@@ -104,7 +105,6 @@ const ChatPage = () => {
                 message={prompt}
                 imageURL="/images/dummy.jpg"
             />)
-            console.log("Requestttt")
             const response = await axios
                 .post(`${CHATBOT_URI}/ask`, {}, {
                     headers: {
@@ -126,9 +126,13 @@ const ChatPage = () => {
                     />)
                 })
 
-            console.log(`${CHATBOT_URI}/ask`)
             if (response.status === 200) {
                 setThinking(false)
+                const products = extractProductNames(response.data.response, companyProducts)
+                products.forEach((item)=>{
+                    const product1 = companyProducts.find(product => product.name === item);
+                    setURLs([...urls, product1.url || null]);
+                })
                 componentArray.push(<ChatItem
                     key={Math.random()}
                     type="recieved"
@@ -136,16 +140,22 @@ const ChatPage = () => {
                     time="11:30 AM"
                     message={response.data.response}
                     imageURL="/images/dummy.jpg"
+                    interactivators={{
+                        images: false,
+                        mail: false,
+                        phone: false,
+                        link: urls,
+                    }}
                 />)
-                const products = extractProductNames(response.data.response, companyProducts)
-                console.log(products)
+                // console.log(products)
             }
 
             setChatComponentArray(componentArray)
             chatContainerRef.scrollTop = chatContainerRef.scrollHeight;
         }
     };
-    // console.log(companyData.data);
+    console.log(urls);
+    // console.log(companyProducts);
     // const companiesOptionContainer = companies.map((item) => (
     //     <Option key={item[1]} >{item[0]}</Option>
     // ))
