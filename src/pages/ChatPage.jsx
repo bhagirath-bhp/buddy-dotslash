@@ -82,34 +82,37 @@ const ChatPage = () => {
                 message={prompt}
                 imageURL="/images/dummy.jpg"
             />)
-            try {
-                const response = await axios.post(`${CHATBOT_URI}/ask`, {
-                    "sendQuery" : prompt,
-                    "companyName" : currentCompany
-                });
-                componentArray.push(<ChatItem
-                    key={Math.random()}
-                    type="recieved"
-                    name="Jai Shree Ram"
-                    time="11:30 AM"
-                    message={response.data}
-                    imageURL="/images/dummy.jpg"
-                    interactivators={true}
-                />)
-            } catch (error) {
-                setTimeout(() => {
+            const response = await axios
+                .post(`${CHATBOT_URI}/ask`, {}, {
+                    headers: {
+                        "sendQuery": prompt,
+                        "companyName": currentCompany
+                    }
+                })
+                .catch((error) => {
+                    // setTimeout(() => {
+                    // }, 1000);
                     setThinking(false)
-                }, 1000);
+                    componentArray.push(<ChatItem
+                        key={Math.random()}
+                        type="recieved"
+                        name="Jai Shree Ram"
+                        time="11:30 AM"
+                        message={error.message}
+                        imageURL="/images/dummy.jpg"
+                    />)
+                })
+
+            if(response.status===200){
+                setThinking(false)
                 componentArray.push(<ChatItem
                     key={Math.random()}
                     type="recieved"
                     name="Jai Shree Ram"
                     time="11:30 AM"
-                    message={error.message}
+                    message={response.data.response}
                     imageURL="/images/dummy.jpg"
-                    interactivators={true}
                 />)
-
             }
 
             setChatComponentArray(componentArray)
