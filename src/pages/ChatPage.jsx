@@ -21,7 +21,7 @@ const ChatPage = () => {
     const [thinking, setThinking] = useState(false);
     const [chatComponentArray, setChatComponentArray] = useState([]);
     const componentArray = chatComponentArray
-    const CHATBOT_URI = "https://customized-chatbot.onrender.com";
+    const CHATBOT_URI = "https://ultimatecc-bs.onrender.com";
     const DB_URI = "https://ultimatecc-strapi.onrender.com/api";
     const bearer = "5a2c40b8f8edf75a9877089261a42e0c16a257a3d18ace5af3297a4affd6ade0402a647251e8a08aba1bcb43d87484c0778fc96b9250fb03e9ad27f24f05d67a743f1fa1ea6148a57accf52e1542ef8a8ee93b9b203a57beb2ce0230490a3ce25f8bd1ea652c622e3cf390959cb818643ba2385eb53b52e99e45ecf25895ef2f"
 
@@ -61,9 +61,9 @@ const ChatPage = () => {
         fetchData();
     }, [])
 
-    useEffect(()=>{
-        async function fetchCompanyData(){
-            if(currentCompany){
+    useEffect(() => {
+        async function fetchCompanyData() {
+            if (currentCompany) {
                 const response = await axios.get(`${DB_URI}/companies?populate=*&filters[name][$eq]=${currentCompany}`, {
                     headers: {
                         Authorization: `Bearer ${bearer}`
@@ -93,6 +93,7 @@ const ChatPage = () => {
     const handleSubmit = async (event) => {
         setThinking(true)
         event.preventDefault();
+        event.target[0].value = "";
         if (prompt.length > 0) {
             chatContainerRef.scrollTop = 0;
             componentArray.push(<ChatItem
@@ -103,6 +104,7 @@ const ChatPage = () => {
                 message={prompt}
                 imageURL="/images/dummy.jpg"
             />)
+            console.log("Requestttt")
             const response = await axios
                 .post(`${CHATBOT_URI}/ask`, {}, {
                     headers: {
@@ -124,7 +126,8 @@ const ChatPage = () => {
                     />)
                 })
 
-            if(response.status===200){
+            console.log(`${CHATBOT_URI}/ask`)
+            if (response.status === 200) {
                 setThinking(false)
                 componentArray.push(<ChatItem
                     key={Math.random()}
@@ -135,9 +138,9 @@ const ChatPage = () => {
                     imageURL="/images/dummy.jpg"
                 />)
                 const products = extractProductNames(response.data.response, companyProducts)
-                console.log(products) 
+                console.log(products)
             }
-            
+
             setChatComponentArray(componentArray)
             chatContainerRef.scrollTop = chatContainerRef.scrollHeight;
         }
