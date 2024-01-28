@@ -68,7 +68,6 @@ const ChatPage = () => {
             SpeechRecognition.stopListening();
         }
     }
-    console.log(companies)
     const handleSubmit = async (event) => {
         setThinking(true)
         event.preventDefault();
@@ -143,7 +142,7 @@ const ChatPage = () => {
                 </IconButton>
             </form>
             <ProductSearch />
-            <GeneratePitch audioUrl="/audio/sample.mp3"/>
+            {/* <GeneratePitch audioUrl="/audio/sample.mp3"/> */}
         </div>
     );
 };

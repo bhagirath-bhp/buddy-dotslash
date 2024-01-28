@@ -6,7 +6,7 @@ const Interactivators = ({ data }) => {
 
   return (
     <div>
-      <ImageCarousel images={"j"}/>
+      <ImageCarousel images={data.images}/>
       <div className="btns flex gap-5">
         <a href={data.link} target="_blank" rel="noopener noreferrer">
           <Button color='white' id="link-tooltip" className={`${!data.link?"hidden":"block"}`}>
