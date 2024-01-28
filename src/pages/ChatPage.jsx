@@ -13,6 +13,7 @@ import GeneratePitch from "../components/GeneratePitch";
 const ChatPage = () => {
     const [companies, setCompanies] = useState([]);
     const chatContainerRef = useRef();
+    const [currentCompany, setCurrentCompany] = useState("");
     const [prompt, setPrompt] = useState(" ");
     const [thinking, setThinking] = useState(true);
     const [chatComponentArray, setChatComponentArray] = useState([]);
@@ -45,7 +46,7 @@ const ChatPage = () => {
                     console.log(error)
                 })
             if (response.status === 200) {
-                const companyNames = response.data.data.map(item => item.attributes.name);
+                const companyNames = response.data.data.map(item => [item.attributes.name, item.id]);
                 setCompanies(companyNames);
             }
         }
@@ -83,7 +84,8 @@ const ChatPage = () => {
             />)
             try {
                 const response = await axios.post(`${CHATBOT_URI}/ask`, {
-                    sendQuery: prompt,
+                    "sendQuery" : prompt,
+                    "companyName" : currentCompany
                 });
                 componentArray.push(<ChatItem
                     key={Math.random()}
@@ -114,18 +116,26 @@ const ChatPage = () => {
             chatContainerRef.scrollTop = chatContainerRef.scrollHeight;
         }
     };
-
+    // const companiesOptionContainer = companies.map((item) => (
+    //     <Option key={item[1]} >{item[0]}</Option>
+    // ))
     const companiesOptionContainer = companies.map((item) => (
-        <Option key={Math.random} >{item}</Option>
+        <option key={item[1]} className="text-black hover:bg-blue-gray-900">{item[0]}</option>
     ))
+    const handleCompanyChange = (e) => {
+        setCurrentCompany(e.target.value)
+    }
+
+
+
     return (
         <div className="flex flex-col justify-center items-center w-full h-screen py-[1rem]">
             <div className="nav flex justify-between w-full px-[3rem]">
                 <div className="logo">UltimateCC</div>
                 <div className="select-company">
-                    <Select >
+                    <select onChange={handleCompanyChange} className="bg-transparent rounded-lg border-[1px] border-white outline-none py-3 px-4">
                         {companiesOptionContainer}
-                    </Select>
+                    </select>
                 </div>
 
             </div>
